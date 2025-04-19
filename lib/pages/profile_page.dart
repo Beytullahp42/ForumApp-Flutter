@@ -18,6 +18,7 @@ class ProfilePage extends StatefulWidget {
 
 class _ProfilePageState extends State<ProfilePage> with RouteAware{
   late Future<User> userFuture;
+  User? _user;
   late Future<PaginatedResponse<Post>> postsFuture;
 
   @override
@@ -60,7 +61,9 @@ class _ProfilePageState extends State<ProfilePage> with RouteAware{
           IconButton(
             icon: const Icon(Icons.settings),
             onPressed: () {
-              Navigator.pushNamed(context, AppRoutes.settings, arguments: userFuture);
+              if (_user != null) {
+                Navigator.pushNamed(context, AppRoutes.settings, arguments: _user);
+              }
             },
           ),
         ],
@@ -76,6 +79,7 @@ class _ProfilePageState extends State<ProfilePage> with RouteAware{
             return const Center(child: Text("User not found"));
           } else {
             final user = userSnapshot.data!;
+            _user = user; // store it only once
 
             return Padding(
               padding: const EdgeInsets.all(16.0), // added padding

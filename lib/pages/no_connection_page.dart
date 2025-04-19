@@ -1,7 +1,6 @@
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:restart_app/restart_app.dart';
 
 class NoConnectionPage extends StatefulWidget {
   const NoConnectionPage({super.key});

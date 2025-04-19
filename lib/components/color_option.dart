@@ -8,13 +8,13 @@ class ColorOption {
 
   static final List<ColorOption> availableColors = [
     ColorOption(Colors.white, "White"),
-    ColorOption(Colors.redAccent, "Red"),
+    ColorOption(Color(0xffff9696), "Red"),
     ColorOption(Colors.greenAccent, "Green"),
-    ColorOption(Colors.blueAccent, "Blue"),
-    ColorOption(Colors.yellowAccent, "Yellow"),
-    ColorOption(Colors.purpleAccent, "Purple"),
+    ColorOption(Colors.lightBlueAccent, "Blue"),
+    ColorOption(Color(0xFFFFFFA0), "Yellow"),
+    ColorOption(Color(0xffe380ff), "Purple"),
     ColorOption(Colors.orangeAccent, "Orange"),
-    ColorOption(Colors.grey, "Grey"),
+    ColorOption(Colors.white38, "Grey"),
   ];
 
   static final Map<String, Color> colorMap = {

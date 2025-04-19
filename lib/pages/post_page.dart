@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:forum_app_ui/components/post_tile.dart';
 import 'package:forum_app_ui/components/paginated_comments_view.dart';
 import 'package:forum_app_ui/components/unfocus_wrapper.dart';
@@ -113,6 +114,7 @@ class _PostPageState extends State<PostPage> with RouteAware {
                                             );
                                             Navigator.of(context).pop();
                                             Navigator.of(context).pop();
+                                            Fluttertoast.showToast(msg: "Post deleted successfully");
                                           },
                                           child: const Text('Delete'),
                                         ),
@@ -126,17 +128,12 @@ class _PostPageState extends State<PostPage> with RouteAware {
                           : [],
                 ),
                 body: Padding(
-                  padding: const EdgeInsets.fromLTRB(16, 16, 16, 32),
+                  padding: const EdgeInsets.fromLTRB(8, 16, 8, 32),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      postTile(post: post, isClickable: false,),
-                      const Text(
-                        'Comments',
-                        style: TextStyle(
-                          fontSize: 16
-                        )
-                      ),
+                      postTile(post: post, isClickable: false),
+                      const Text('Comments', style: TextStyle(fontSize: 16)),
                       Expanded(
                         child: FutureBuilder<PaginatedResponse<Comment>>(
                           future: commentsFuture,
@@ -197,13 +194,14 @@ class _PostPageState extends State<PostPage> with RouteAware {
                                 content,
                               );
                               if (success) {
+                                Fluttertoast.showToast(
+                                  msg: 'Comment posted successfully',
+                                );
                                 _commentController.clear();
                                 _fetchData(); // Refresh comments
                               } else {
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  const SnackBar(
-                                    content: Text('Failed to post comment'),
-                                  ),
+                                Fluttertoast.showToast(
+                                  msg: 'Failed to post comment',
                                 );
                               }
                               setState(() => _isPostingComment = false);

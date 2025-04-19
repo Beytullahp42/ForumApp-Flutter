@@ -58,20 +58,23 @@ class _RegisterPageState extends State<RegisterPage> with RouteAware {
       });
       return;
     }
-
+    if (password.length < 8) {
+      setState(() {
+        _error = "Password must be at least 8 characters long.";
+        _isLoading = false;
+      });
+      return;
+    }
     final success = await ApiCalls.register(name, email, password, confirmPassword);
-
     if (!mounted) return;
-
     setState(() {
       _isLoading = false;
     });
-
-    if (success) {
+    if (success == "success") {
       Navigator.pushReplacementNamed(context, AppRoutes.home);
     } else {
       setState(() {
-        _error = "Registration failed. Email may already be used.";
+        _error = success;
       });
     }
   }

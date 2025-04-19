@@ -71,7 +71,7 @@ class _postTileState extends State<postTile> {
     final formattedDate = timeago.format(post.createdAt, locale: 'en_short');
 
     return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 6.0),
+      margin: const EdgeInsets.symmetric(horizontal: 6.0, vertical: 6.0),
       decoration: BoxDecoration(
         color: ColorOption.getColorByName(post.color),
         borderRadius: BorderRadius.circular(12.0),
@@ -79,7 +79,7 @@ class _postTileState extends State<postTile> {
       child: Column(
         children: [
           Padding(
-            padding: const EdgeInsets.all(8.0),
+            padding: const EdgeInsets.all(12.0),
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:forum_app_ui/components/profile_picture.dart';
 import 'package:timeago/timeago.dart' as timeago;
 import '../models/comment.dart';
@@ -73,14 +74,10 @@ class _commentTileState extends State<commentTile> {
   void _deleteComment() async {
     final success = await ApiCalls.deleteComment(comment.id);
     if (success) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Comment deleted successfully')),
-      );
+      Fluttertoast.showToast(msg: "Comment Deleted Successfully");
       // You might want to call a function here to refresh the comments list
     } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Failed to delete comment')),
-      );
+      Fluttertoast.showToast(msg: "Failed to delete comment");
     }
   }
 
@@ -105,7 +102,6 @@ class _commentTileState extends State<commentTile> {
         return Container(
           margin: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 6.0),
           decoration: BoxDecoration(
-            color: Colors.green,
             borderRadius: BorderRadius.circular(12.0),
           ),
           child: Column(
@@ -130,7 +126,7 @@ class _commentTileState extends State<commentTile> {
                             ],
                           ),
                           const SizedBox(height: 10),
-                          Text(comment.content + comment.id.toString(),
+                          Text(comment.content,
                               style: const TextStyle(
                                 fontSize: 16,
                                 fontWeight: FontWeight.bold,

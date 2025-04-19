@@ -1,6 +1,5 @@
 import 'dart:convert';
 
-import 'package:flutter/services.dart';
 import 'package:forum_app_ui/models/post.dart';
 import 'package:forum_app_ui/models/user.dart';
 import 'package:forum_app_ui/services/http_service.dart';
@@ -40,7 +39,7 @@ class ApiCalls {
     }
   }
 
-  static Future<bool> register(
+  static Future<String> register(
     String name,
     String email,
     String password,
@@ -60,10 +59,10 @@ class ApiCalls {
       await prefs.setString('token', token);
       final user = await getUser();
       await prefs.setString('userId', user.id.toString());
-      return true;
+      return "success";
     } else {
-      Clipboard.setData(ClipboardData(text: response.body));
-      return false;
+      final data = jsonDecode(response.body);
+      return data['message'];
     }
   }
 
@@ -88,7 +87,7 @@ class ApiCalls {
     return false;
   }
 
-  static Future<bool> updateProfile(
+  static Future<String> updateProfile(
     String name,
     String email,
     String profilePicture,
@@ -99,11 +98,11 @@ class ApiCalls {
       "profile_picture": profilePicture,
     };
     final response = await HttpService.put("user", body);
-    Clipboard.setData(ClipboardData(text: "${jsonDecode(response.body)}"));
     if (response.statusCode == 200) {
-      return true;
+      return "success";
     } else {
-      return false;
+      final data = jsonDecode(response.body);
+      return data['message'];
     }
   }
 

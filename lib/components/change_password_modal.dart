@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 import '../services/api_calls.dart';
 
@@ -53,9 +54,7 @@ class _ChangePasswordModalState extends State<ChangePasswordModal> {
 
     if (success) {
       Navigator.pop(context);
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text("Password changed successfully")),
-      );
+      Fluttertoast.showToast(msg: "Password changed successfully");
     } else {
       setState(() => _errorMessage = "Incorrect old password.");
     }

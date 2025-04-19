@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:forum_app_ui/components/profile_picture.dart';
 import 'package:forum_app_ui/components/unfocus_wrapper.dart';
 import 'package:forum_app_ui/routes.dart';
 import 'package:forum_app_ui/services/api_calls.dart';
-
+import 'package:emoji_picker_flutter/emoji_picker_flutter.dart';
 import '../components/change_password_modal.dart';
+import '../components/color_option.dart';
 import '../components/delete_account_modal.dart';
 import '../main.dart';
 import '../models/user.dart';
@@ -33,6 +35,7 @@ class _SettingsPageState extends State<SettingsPage> with RouteAware {
   final TextEditingController _emailController = TextEditingController();
   String emojiText = "&white";
   String? emailError;
+  ColorOption? _selectedColor = ColorOption.availableColors[0];
 
   // For password change
   final TextEditingController _oldPasswordController = TextEditingController();
@@ -67,7 +70,6 @@ class _SettingsPageState extends State<SettingsPage> with RouteAware {
     super.dispose();
   }
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -79,20 +81,16 @@ class _SettingsPageState extends State<SettingsPage> with RouteAware {
               final success = await ApiCalls.updateProfile(
                 _nameController.text,
                 _emailController.text,
-                "😉&purple",
+                emojiText,
               );
-              if (success && mounted) {
+              if (success == "success" && mounted) {
                 setState(() {
                   emailError = null;
                 });
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(
-                    content: Text("Profile updated successfully!"),
-                  ),
-                );
+                Fluttertoast.showToast(msg: "Profile updated successfully");
               } else if (mounted) {
                 setState(() {
-                  emailError = "This email is already taken";
+                  emailError = success;
                 });
               }
             },
@@ -108,8 +106,57 @@ class _SettingsPageState extends State<SettingsPage> with RouteAware {
               //How to add a clickable image
               GestureDetector(
                 child: ProfilePicture(emojiText: emojiText, size: 150),
-                onTap: () {},
+                onTap: () {
+                  showModalBottomSheet(
+                    context: context,
+                    builder: (context) {
+                      return EmojiPicker(
+                        config: Config(
+                          height: 300,
+                          bottomActionBarConfig: BottomActionBarConfig(
+                            enabled: false,
+                          ),
+                        ),
+                        onEmojiSelected: (category, emoji) {
+                          setState(() {
+                            emojiText =
+                                "${emoji.emoji}&${_selectedColor?.name ?? 'White'}";
+                          });
+                          Navigator.pop(context);
+                        },
+                      );
+                    },
+                  );
+                },
               ),
+              const SizedBox(height: 20),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children:
+                    ColorOption.availableColors.map((colorOption) {
+                      return GestureDetector(
+                        onTap: () {
+                          setState(() {
+                            _selectedColor = colorOption;
+                            // Update emojiText as well, preserving emoji part
+                            final emoji = emojiText.split("&").first;
+                            emojiText = "$emoji&${colorOption.name}";
+                          });
+                        },
+                        child: Container(
+                          margin: const EdgeInsets.symmetric(horizontal: 4),
+                          width: 30,
+                          height: 30,
+                          decoration: BoxDecoration(
+                            color: colorOption.color,
+                            shape: BoxShape.circle,
+                            border: Border.all(color: Colors.black, width: 2),
+                          ),
+                        ),
+                      );
+                    }).toList(),
+              ),
+
               const SizedBox(height: 20),
               TextField(
                 controller: _nameController,

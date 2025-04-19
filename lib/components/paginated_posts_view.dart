@@ -123,8 +123,6 @@ class _PaginatedPostsWidgetState extends State<PaginatedPostsWidget> {
       } else {
         throw Exception('Failed to load posts from $endpoint');
       }
-    } catch (e) {
-      print("Pagination error: $e");
     } finally {
       setState(() => _isLoading = false);
     }
