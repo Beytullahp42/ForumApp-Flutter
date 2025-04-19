@@ -1,16 +1,10 @@
-# forum_app_ui
+# Forum App Mobile
 
-A new Flutter project.
+This is a forum mobile app built with Flutter, which interacts with a Laravel 11 backend API using HTTP requests for operations like user registration, login, edit profile, and create, read and delete posts and comments. Users can also like or dislike posts and comments. Authentication is handled via Sanctum, and the bearer token is saved via sharedPreferences, allowing users to stay logged in.
 
-## Getting Started
+Note: The hosted API is available until December 11, 2025. After that, it may be taken down or replaced.
 
-This project is a starting point for a Flutter application.
+Laravel backend source code: https://github.com/Beytullahp42/ForumAppAPI
 
-A few resources to get you started if this is your first Flutter project:
+Hosted API Link: https://beytullahpaytar.com.tr/
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
