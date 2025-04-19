@@ -14,7 +14,7 @@ class ColorOption {
     ColorOption(Color(0xFFFFFFA0), "Yellow"),
     ColorOption(Color(0xffe380ff), "Purple"),
     ColorOption(Colors.orangeAccent, "Orange"),
-    ColorOption(Colors.white38, "Grey"),
+    ColorOption(Color(0xFFAAAAAA), "Grey"),
   ];
 
   static final Map<String, Color> colorMap = {

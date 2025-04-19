@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:forum_app_ui/models/post.dart';
 import 'package:forum_app_ui/models/user.dart';
 import 'package:forum_app_ui/services/http_service.dart';
@@ -135,6 +136,17 @@ class ApiCalls {
     }
   }
 
+  static Future<User> getUserById(int userId) async {
+    final response = await HttpService.get("user/$userId");
+    if (response.statusCode == 200) {
+      final data = jsonDecode(response.body);
+      return User.fromJson(data["user"]);
+    } else {
+      Fluttertoast.showToast(msg: "${jsonDecode(response.body)}");
+      throw Exception("Failed to load user");
+    }
+  }
+
   static Future<PaginatedResponse<Post>> getUserPosts({int page = 1}) async {
     final response = await HttpService.get("get-user-posts?page=$page");
 
@@ -145,6 +157,23 @@ class ApiCalls {
         (json) => Post.fromJson(json),
       );
     } else {
+      throw Exception("Failed to load user posts");
+    }
+  }
+
+  static Future<PaginatedResponse<Post>> getUserPostsById(
+    int userId, {
+    int page = 1,
+  }) async {
+    final response = await HttpService.get("posts/user/$userId?page=$page");
+    if (response.statusCode == 200) {
+      final data = jsonDecode(response.body);
+      return PaginatedResponse<Post>.fromJson(
+        data,
+        (json) => Post.fromJson(json),
+      );
+    } else {
+      Fluttertoast.showToast(msg: "${jsonDecode(response.body)}");
       throw Exception("Failed to load user posts");
     }
   }

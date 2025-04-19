@@ -8,6 +8,7 @@ import 'package:forum_app_ui/pages/post_page.dart';
 import 'package:forum_app_ui/pages/profile_page.dart';
 import 'package:forum_app_ui/pages/register_page.dart';
 import 'package:forum_app_ui/pages/settings_page.dart';
+import 'package:forum_app_ui/pages/user_page.dart';
 
 class AppRoutes {
   static const String home = "/home";
@@ -18,7 +19,7 @@ class AppRoutes {
   static const String createPost = "/createPost";
   static const String post = "/post";
   static const String noConnectionPage = "/noConnectionPage";
-
+  static const String userPage = "/userPage";
   static const String initialRoute = home;
 
   static Map<String, WidgetBuilder> routes = {
@@ -36,5 +37,9 @@ class AppRoutes {
       return PostPage(postId: args);
     },
     "/noConnectionPage": (context) => const NoConnectionPage(),
+    "/userPage": (context) {
+      final args = ModalRoute.of(context)!.settings.arguments as int;
+      return UserPage(id: args);
+    },
   };
 }

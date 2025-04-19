@@ -3,6 +3,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:forum_app_ui/components/profile_picture.dart';
 import 'package:timeago/timeago.dart' as timeago;
 import '../models/comment.dart';
+import '../routes.dart';
 import '../services/api_calls.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -34,7 +35,8 @@ class _commentTileState extends State<commentTile> {
 
   Future<int> _getUserId() async {
     final prefs = await SharedPreferences.getInstance();
-    return int.tryParse(prefs.getString('userId')!) ?? -1; // Default to -1 if not found
+    return int.tryParse(prefs.getString('userId')!) ??
+        -1; // Default to -1 if not found
   }
 
   void _handleLike() {
@@ -101,9 +103,7 @@ class _commentTileState extends State<commentTile> {
 
         return Container(
           margin: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 6.0),
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(12.0),
-          ),
+          decoration: BoxDecoration(borderRadius: BorderRadius.circular(12.0)),
           child: Column(
             children: [
               Padding(
@@ -117,20 +117,43 @@ class _commentTileState extends State<commentTile> {
                         children: [
                           Row(
                             children: [
-                              ProfilePicture(emojiText: comment.user.profilePicture, size: 30),
+                              GestureDetector(
+                                child: ProfilePicture(
+                                  emojiText: comment.user.profilePicture,
+                                  size: 30,
+                                ),
+                                onTap: () {
+                                  Navigator.pushNamed(
+                                    context,
+                                    AppRoutes.userPage,
+                                    arguments: comment.user.id,
+                                  );
+                                },
+                              ),
                               const SizedBox(width: 10),
-                              Text(
-                                comment.user.name,
-                                style: const TextStyle(fontSize: 15),
+                              GestureDetector(
+                                child: Text(
+                                  comment.user.name,
+                                  style: const TextStyle(fontSize: 13),
+                                ),
+                                onTap: () {
+                                  Navigator.pushNamed(
+                                    context,
+                                    AppRoutes.userPage,
+                                    arguments: comment.user.id,
+                                  );
+                                },
                               ),
                             ],
                           ),
                           const SizedBox(height: 10),
-                          Text(comment.content,
-                              style: const TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.bold,
-                              )),
+                          Text(
+                            comment.content,
+                            style: const TextStyle(
+                              fontSize: 17,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
                         ],
                       ),
                     ),
@@ -171,7 +194,10 @@ class _commentTileState extends State<commentTile> {
                             ),
                             if (comment.user.id == userId)
                               IconButton(
-                                icon: const Icon(Icons.delete, color: Colors.black),
+                                icon: const Icon(
+                                  Icons.delete,
+                                  color: Colors.black,
+                                ),
                                 onPressed: () {
                                   // Show confirmation dialog before deletion
                                   showDialog(
@@ -179,18 +205,24 @@ class _commentTileState extends State<commentTile> {
                                     builder: (context) {
                                       return AlertDialog(
                                         title: const Text('Delete Comment'),
-                                        content: const Text('Are you sure you want to delete this comment?'),
+                                        content: const Text(
+                                          'Are you sure you want to delete this comment?',
+                                        ),
                                         actions: [
                                           TextButton(
                                             onPressed: () {
-                                              Navigator.of(context).pop(); // Close the dialog
+                                              Navigator.of(
+                                                context,
+                                              ).pop(); // Close the dialog
                                             },
                                             child: const Text('Cancel'),
                                           ),
                                           TextButton(
                                             onPressed: () {
                                               _deleteComment(); // Call the delete function
-                                              Navigator.of(context).pop(); // Close the dialog
+                                              Navigator.of(
+                                                context,
+                                              ).pop(); // Close the dialog
                                             },
                                             child: const Text('Delete'),
                                           ),

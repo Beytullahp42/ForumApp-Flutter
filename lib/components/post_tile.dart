@@ -97,9 +97,18 @@ class _postTileState extends State<postTile> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(
-                            post.user.name,
-                            style: const TextStyle(fontSize: 12),
+                          GestureDetector(
+                            child: Text(
+                              post.user.name,
+                              style: const TextStyle(fontSize: 12),
+                            ),
+                            onTap: () {
+                              Navigator.pushNamed(
+                                context,
+                                AppRoutes.userPage,
+                                arguments: post.user.id,
+                              );
+                            }
                           ),
                           Text(
                             post.title,

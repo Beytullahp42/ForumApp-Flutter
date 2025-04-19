@@ -11,7 +11,6 @@ class LoginPage extends StatefulWidget {
   @override
   State<LoginPage> createState() => _LoginPageState();
 }
-
 class _LoginPageState extends State<LoginPage> with RouteAware {
   @override
   void didPopNext() {
@@ -31,13 +30,20 @@ class _LoginPageState extends State<LoginPage> with RouteAware {
   String? _error;
 
   Future<void> _handleLogin() async {
+    final email = _emailController.text.trim();
+    final password = _passwordController.text;
+
+    if (email.isEmpty || password.isEmpty) {
+      setState(() {
+        _error = "Please fill in both email and password.";
+      });
+      return;
+    }
+
     setState(() {
       _isLoading = true;
       _error = null;
     });
-
-    final email = _emailController.text.trim();
-    final password = _passwordController.text;
 
     final success = await ApiCalls.login(email, password);
     if (!mounted) return;
@@ -54,6 +60,7 @@ class _LoginPageState extends State<LoginPage> with RouteAware {
       });
     }
   }
+
 
   @override
   Widget build(BuildContext context) {

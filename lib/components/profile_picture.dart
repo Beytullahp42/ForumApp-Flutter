@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:forum_app_ui/components/color_option.dart';
 
 class ProfilePicture extends StatelessWidget {
   final String emojiText; // The emoji to display
@@ -14,7 +15,7 @@ class ProfilePicture extends StatelessWidget {
   Widget build(BuildContext context) {
     List<String> parts = emojiText.split('&');
     String emoji = parts[0];
-    Color color = _getColor(parts[1]);
+    Color color = ColorOption.getColorByName(parts[1]);
     return Container(
       width: size, // Circle size
       height: size, // Circle size
@@ -34,26 +35,4 @@ class ProfilePicture extends StatelessWidget {
     );
   }
 
-  Color _getColor(String color) {
-    switch (color.toLowerCase()) {
-      case 'red':
-        return Colors.red;
-      case 'green':
-        return Colors.green;
-      case 'blue':
-        return Colors.blue;
-      case 'yellow':
-        return Colors.yellow;
-      case 'purple':
-        return Colors.purple;
-      case 'orange':
-        return Colors.orange;
-      case 'black':
-        return Colors.black;
-      case 'white':
-        return Colors.white;
-      default:
-        return Colors.white;
-    }
-  }
 }
