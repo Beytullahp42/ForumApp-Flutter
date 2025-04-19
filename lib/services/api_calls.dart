@@ -6,6 +6,7 @@ import 'package:forum_app_ui/models/user.dart';
 import 'package:forum_app_ui/services/http_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../models/comment.dart';
 import '../models/paginated_response.dart';
 
 class ApiCalls {
@@ -31,6 +32,8 @@ class ApiCalls {
       final data = jsonDecode(response.body);
       final token = data['token'];
       await prefs.setString('token', token);
+      final user = await getUser();
+      await prefs.setString('userId', user.id.toString());
       return true;
     } else {
       return false;
@@ -55,6 +58,8 @@ class ApiCalls {
       final data = jsonDecode(response.body);
       final token = data['token'];
       await prefs.setString('token', token);
+      final user = await getUser();
+      await prefs.setString('userId', user.id.toString());
       return true;
     } else {
       Clipboard.setData(ClipboardData(text: response.body));
@@ -65,6 +70,8 @@ class ApiCalls {
   static Future<void> logout() async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.remove('token');
+    await prefs.remove('userId');
+    await HttpService.post("logout", null);
   }
 
   static Future<bool> deleteAccount(String password) async {
@@ -75,6 +82,7 @@ class ApiCalls {
     if (response.statusCode == 200) {
       final prefs = await SharedPreferences.getInstance();
       await prefs.remove('token');
+      await prefs.remove('userId');
       return true;
     }
     return false;
@@ -170,8 +178,6 @@ class ApiCalls {
     if (response.statusCode == 200 || response.statusCode == 201) {
       return true;
     } else {
-      // Optional: Copy response for debug purposes
-      Clipboard.setData(ClipboardData(text: response.body));
       return false;
     }
   }
@@ -198,9 +204,76 @@ class ApiCalls {
     final response = await HttpService.get("posts/$postId");
     if (response.statusCode == 200) {
       final data = jsonDecode(response.body);
-      return Post.fromJson(data["post"]);
+      return Post.fromJson(data);
     } else {
       throw Exception("Failed to load post");
+    }
+  }
+
+  static Future<void> deletePost(int postId) async {
+    final response = await HttpService.delete("posts/$postId");
+    if (response.statusCode == 200) {
+      return;
+    } else {
+      throw Exception("Failed to delete post");
+    }
+  }
+
+  static Future<bool> createComment(
+    int postId,
+    String content,
+  ) async {
+    final body = {
+      "p_content": content,
+    };
+    final response = await HttpService.post("posts/$postId/comments", body);
+    if (response.statusCode == 200 || response.statusCode == 201) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  static Future<PaginatedResponse<Comment>> getComments(
+    int postId, {
+    int page = 1,
+  }) async {
+    final response = await HttpService.get("posts/$postId/comments?page=$page");
+    if (response.statusCode == 200) {
+      final data = jsonDecode(response.body);
+      return PaginatedResponse<Comment>.fromJson(
+        data,
+        (json) => Comment.fromJson(json),
+      );
+    } else {
+      throw Exception("Failed to load comments");
+    }
+  }
+
+  static Future<bool> likeComment(int commentId) async {
+    final response = await HttpService.post("comments/$commentId/like", null);
+    if (response.statusCode == 200 || response.statusCode == 201) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  static Future<bool> dislikeComment(int commentId) async {
+    final response = await HttpService.post("comments/$commentId/dislike", null);
+    if (response.statusCode == 200 || response.statusCode == 201) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  static Future<bool> deleteComment(int commentId) async {
+    final response = await HttpService.delete("comments/$commentId");
+    if (response.statusCode == 200) {
+      return true;
+    } else {
+      return false;
     }
   }
 }

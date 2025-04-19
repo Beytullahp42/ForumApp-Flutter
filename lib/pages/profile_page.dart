@@ -60,7 +60,7 @@ class _ProfilePageState extends State<ProfilePage> with RouteAware{
           IconButton(
             icon: const Icon(Icons.settings),
             onPressed: () {
-              Navigator.pushNamed(context, AppRoutes.settings);
+              Navigator.pushNamed(context, AppRoutes.settings, arguments: userFuture);
             },
           ),
         ],

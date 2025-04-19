@@ -7,8 +7,9 @@ import 'color_option.dart';
 
 class postTile extends StatefulWidget {
   final Post post;
+  final isClickable;
 
-  const postTile({super.key, required this.post});
+  const postTile({super.key, required this.post, this.isClickable = true});
 
   @override
   State<postTile> createState() => _postTileState();
@@ -84,8 +85,12 @@ class _postTileState extends State<postTile> {
               children: [
                 Expanded(
                   child: GestureDetector(
-                    onTap: () {
-                      Navigator.pushNamed(context, AppRoutes.post);
+                    onTap: () { widget.isClickable ?
+                      Navigator.pushNamed(
+                        context,
+                        AppRoutes.post,
+                        arguments: post.id, // Pass the post ID to the PostPage
+                      ) : {};
                     },
                     child: Container(
                       color: Colors.transparent,
@@ -112,7 +117,7 @@ class _postTileState extends State<postTile> {
                 ),
                 Column(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  crossAxisAlignment: CrossAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
                     Text(formattedDate),
                     Row(

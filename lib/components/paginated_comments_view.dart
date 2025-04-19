@@ -1,27 +1,33 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:forum_app_ui/models/post.dart';
+import 'package:forum_app_ui/models/comment.dart';
 import 'package:forum_app_ui/models/paginated_response.dart';
 import 'package:forum_app_ui/services/http_service.dart';
-import '../components/post_tile.dart';
-import 'dart:convert';
+import 'comment_tile.dart';
 
-class PaginatedPostsWidget extends StatefulWidget {
-  final PaginatedResponse<Post> initialResponse;
+class PaginatedCommentsWidget extends StatefulWidget {
+  final int postId;
+  final PaginatedResponse<Comment> initialResponse;
 
-  const PaginatedPostsWidget({super.key, required this.initialResponse});
+  const PaginatedCommentsWidget({
+    super.key,
+    required this.postId,
+    required this.initialResponse,
+  });
 
   @override
-  State<PaginatedPostsWidget> createState() => _PaginatedPostsWidgetState();
+  State<PaginatedCommentsWidget> createState() =>
+      _PaginatedCommentsWidgetState();
 }
 
-class _PaginatedPostsWidgetState extends State<PaginatedPostsWidget> {
-  late PaginatedResponse<Post> _posts;
+class _PaginatedCommentsWidgetState extends State<PaginatedCommentsWidget> {
+  late PaginatedResponse<Comment> _comments;
   bool _isLoading = false;
 
   @override
   void initState() {
     super.initState();
-    _posts = widget.initialResponse;
+    _comments = widget.initialResponse;
   }
 
   @override
@@ -33,9 +39,9 @@ class _PaginatedPostsWidgetState extends State<PaginatedPostsWidget> {
               _isLoading
                   ? const Center(child: CircularProgressIndicator())
                   : ListView.builder(
-                    itemCount: _posts.data.length,
+                    itemCount: _comments.data.length,
                     itemBuilder: (context, index) {
-                      return postTile(post: _posts.data[index]);
+                      return commentTile(comment: _comments.data[index]);
                     },
                   ),
         ),
@@ -60,36 +66,36 @@ class _PaginatedPostsWidgetState extends State<PaginatedPostsWidget> {
         children: [
           FilledButton(
             onPressed:
-                _posts.currentPage > 1
-                    ? () => _loadPage(_posts.firstPageUrl)
+                _comments.currentPage > 1
+                    ? () => _loadPage(_comments.firstPageUrl)
                     : null,
             style: squareButtonStyle,
             child: const Text("<<", textAlign: TextAlign.center),
           ),
           FilledButton(
             onPressed:
-                _posts.prevPageUrl != null
-                    ? () => _loadPage(_posts.prevPageUrl)
+                _comments.prevPageUrl != null
+                    ? () => _loadPage(_comments.prevPageUrl)
                     : null,
             style: squareButtonStyle,
             child: const Text("<", textAlign: TextAlign.center),
           ),
           Text(
-            "${_posts.currentPage}",
+            "${_comments.currentPage}",
             style: const TextStyle(fontWeight: FontWeight.bold),
           ),
           FilledButton(
             onPressed:
-                _posts.nextPageUrl != null
-                    ? () => _loadPage(_posts.nextPageUrl)
+                _comments.nextPageUrl != null
+                    ? () => _loadPage(_comments.nextPageUrl)
                     : null,
             style: squareButtonStyle,
             child: const Text(">", textAlign: TextAlign.center),
           ),
           FilledButton(
             onPressed:
-                _posts.currentPage < _posts.lastPage
-                    ? () => _loadPage(_posts.lastPageUrl)
+                _comments.currentPage < _comments.lastPage
+                    ? () => _loadPage(_comments.lastPageUrl)
                     : null,
             style: squareButtonStyle,
             child: const Text(">>", textAlign: TextAlign.center),
@@ -103,7 +109,8 @@ class _PaginatedPostsWidgetState extends State<PaginatedPostsWidget> {
     if (fullUrl == null || _isLoading) return;
 
     // Strip base URL
-    final baseUrl = "https://beytullahpaytar.com.tr/api/";
+    final baseUrl =
+        "https://beytullahpaytar.com.tr/api/"; // Replace with your base URL
     final endpoint = fullUrl.replaceFirst(baseUrl, "");
 
     setState(() {
@@ -115,13 +122,13 @@ class _PaginatedPostsWidgetState extends State<PaginatedPostsWidget> {
       if (response.statusCode == 200) {
         final data = jsonDecode(response.body);
         setState(() {
-          _posts = PaginatedResponse<Post>.fromJson(
+          _comments = PaginatedResponse<Comment>.fromJson(
             data,
-            (json) => Post.fromJson(json),
+            (json) => Comment.fromJson(json), // Replace with your Comment class
           );
         });
       } else {
-        throw Exception('Failed to load posts from $endpoint');
+        throw Exception('Failed to load comments from $endpoint');
       }
     } catch (e) {
       print("Pagination error: $e");

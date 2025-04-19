@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:forum_app_ui/components/unfocus_wrapper.dart';
 import 'package:forum_app_ui/routes.dart';
 import 'package:forum_app_ui/services/api_calls.dart';
 
@@ -57,47 +58,49 @@ class _LoginPageState extends State<LoginPage> with RouteAware {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 24),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              const Text("Login", style: TextStyle(fontSize: 24)),
-              const SizedBox(height: 20),
-              TextField(
-                controller: _emailController,
-                decoration: const InputDecoration(
-                  labelText: "Email",
-                  border: OutlineInputBorder(),
-                ),
-              ),
-              const SizedBox(height: 10),
-              TextField(
-                controller: _passwordController,
-                decoration: const InputDecoration(
-                  labelText: "Password",
-                  border: OutlineInputBorder(),
-                ),
-                obscureText: true,
-              ),
-              const SizedBox(height: 20),
-              _isLoading
-                  ? const CircularProgressIndicator()
-                  : ElevatedButton(
-                    onPressed: _handleLogin,
-                    child: const Text("Login"),
+      body: UnfocusOnTap(
+        child: Center(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 24),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Text("Login", style: TextStyle(fontSize: 24)),
+                const SizedBox(height: 20),
+                TextField(
+                  controller: _emailController,
+                  decoration: const InputDecoration(
+                    labelText: "Email",
+                    border: OutlineInputBorder(),
                   ),
-              const SizedBox(height: 10),
-              if (_error != null)
-                Text(_error!, style: const TextStyle(color: Colors.red)),
-              TextButton(
-                onPressed: () {
-                  Navigator.pushReplacementNamed(context, AppRoutes.register);
-                },
-                child: const Text("Don't have an account? Sign Up"),
-              ),
-            ],
+                ),
+                const SizedBox(height: 10),
+                TextField(
+                  controller: _passwordController,
+                  decoration: const InputDecoration(
+                    labelText: "Password",
+                    border: OutlineInputBorder(),
+                  ),
+                  obscureText: true,
+                ),
+                const SizedBox(height: 20),
+                _isLoading
+                    ? const CircularProgressIndicator()
+                    : ElevatedButton(
+                      onPressed: _handleLogin,
+                      child: const Text("Login"),
+                    ),
+                const SizedBox(height: 10),
+                if (_error != null)
+                  Text(_error!, style: const TextStyle(color: Colors.red)),
+                TextButton(
+                  onPressed: () {
+                    Navigator.pushReplacementNamed(context, AppRoutes.register);
+                  },
+                  child: const Text("Don't have an account? Sign Up"),
+                ),
+              ],
+            ),
           ),
         ),
       ),

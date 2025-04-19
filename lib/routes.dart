@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:forum_app_ui/models/user.dart';
 import 'package:forum_app_ui/pages/create_post_page.dart';
 import 'package:forum_app_ui/pages/home_page.dart';
 import 'package:forum_app_ui/pages/login_page.dart';
@@ -25,9 +26,15 @@ class AppRoutes {
     "/login": (context) => const LoginPage(),
     "/register": (context) => const RegisterPage(),
     "/profile": (context) => const ProfilePage(),
-    "/settings": (context) => const SettingsPage(),
+    "/settings": (context) {
+      final args = ModalRoute.of(context)!.settings.arguments as User;
+      return SettingsPage(user: args);
+    },
     "/createPost": (context) => const CreatePostPage(),
-    "/post": (context) => const PostPage(),
+    "/post": (context) {
+      final args = ModalRoute.of(context)!.settings.arguments as int;
+      return PostPage(postId: args);
+    },
     "/noConnectionPage": (context) => const NoConnectionPage(),
   };
 }

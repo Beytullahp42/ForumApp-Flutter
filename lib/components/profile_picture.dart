@@ -26,7 +26,7 @@ class ProfilePicture extends StatelessWidget {
         child: Text(
           emoji, // The emoji inside the circle
           style: TextStyle(
-            fontSize: size / 2, // Font size based on the circle size
+            fontSize: size / 1.625, // Font size based on the circle size
             color: color, // Emoji color
           ),
         ),

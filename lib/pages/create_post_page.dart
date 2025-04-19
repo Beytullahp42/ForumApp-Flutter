@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:forum_app_ui/components/unfocus_wrapper.dart';
 
 import '../components/color_option.dart';
 import '../main.dart';
@@ -78,49 +79,51 @@ class _CreatePostPageState extends State<CreatePostPage> with RouteAware {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text('Create Post')),
-      body: Padding(
-        padding: const EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 32.0),
-        child: Column(
-          children: [
-            TextField(
-              controller: _titleController,
-              decoration: const InputDecoration(
-                labelText: 'Title',
-                border: OutlineInputBorder(),
+      body: UnfocusOnTap(
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 32.0),
+          child: Column(
+            children: [
+              TextField(
+                controller: _titleController,
+                decoration: const InputDecoration(
+                  labelText: 'Title',
+                  border: OutlineInputBorder(),
+                ),
               ),
-            ),
-            const SizedBox(height: 10),
-            TextField(
-              controller: _contentController,
-              maxLines: 5,
-              decoration: const InputDecoration(
-                labelText: 'Content',
-                border: OutlineInputBorder(),
+              const SizedBox(height: 10),
+              TextField(
+                controller: _contentController,
+                maxLines: 5,
+                decoration: const InputDecoration(
+                  labelText: 'Content',
+                  border: OutlineInputBorder(),
+                ),
               ),
-            ),
-            const SizedBox(height: 10),
-            FilledButton(
-              onPressed: () {
-                showModalBottomSheet<void>(
-                  context: context,
-                  builder: (BuildContext context) {
-                    return selectColor(context);
-                  },
-                );
-              },
-              style: ButtonStyle(
-                backgroundColor: WidgetStateProperty.all(_selectedColor.color),
+              const SizedBox(height: 10),
+              FilledButton(
+                onPressed: () {
+                  showModalBottomSheet<void>(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return selectColor(context);
+                    },
+                  );
+                },
+                style: ButtonStyle(
+                  backgroundColor: WidgetStateProperty.all(_selectedColor.color),
+                ),
+                child: const Text("Select Color", style: TextStyle(color: Colors.black)),
               ),
-              child: const Text("Select Color", style: TextStyle(color: Colors.black)),
-            ),
-            const Spacer(),
-            _isLoading
-                ? const CircularProgressIndicator()
-                : ElevatedButton(
-              onPressed: _handleCreatePost,
-              child: const Text('Create Post'),
-            ),
-          ],
+              const Spacer(),
+              _isLoading
+                  ? const CircularProgressIndicator()
+                  : ElevatedButton(
+                onPressed: _handleCreatePost,
+                child: const Text('Create Post'),
+              ),
+            ],
+          ),
         ),
       ),
     );
