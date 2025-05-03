@@ -8,3 +8,4 @@ Laravel backend source code: https://github.com/Beytullahp42/ForumAppAPI
 
 Hosted API Link: https://beytullahpaytar.com.tr/
 
+Flutter web app: https://beytullahpaytar.xyz
