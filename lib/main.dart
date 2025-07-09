@@ -20,7 +20,7 @@ class MyApp extends StatelessWidget {
       navigatorObservers: [routeObserver],
       theme: ThemeData(brightness: Brightness.light),
       darkTheme: ThemeData(brightness: Brightness.dark),
-      themeMode: ThemeMode.system,
+      themeMode: ThemeMode.light,
     );
   }
 }
