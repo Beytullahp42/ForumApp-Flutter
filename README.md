@@ -27,7 +27,7 @@ Built with **Flutter** and **Dart**, the app features user authentication, profi
 ## 🔗 Links
 
 - 📦 Laravel Backend Source: [ForumAppAPI-Laravel](https://github.com/Beytullahp42/ForumAppAPI-Laravel)
-- 🌐 Flutter Web App: [beytullahpaytar.xyz](https://beytullahpaytar.xyz)
+- 🌐 Flutter Web App: [https://forum-app-flutter-web.vercel.app](https://forum-app-flutter-web.vercel.app)
 
 ---
 
