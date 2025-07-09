@@ -53,7 +53,7 @@ class _SettingsPageState extends State<SettingsPage> with RouteAware {
     ApiCalls.getUser().then((user) {
       setState(() {
         _nameController.text = user.name;
-        _emailController.text = user.email;
+        _emailController.text = user.email!;
         emojiText = user.profilePicture;
       });
     });

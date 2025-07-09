@@ -38,21 +38,3 @@ class Post {
     isDisliked: json['is_disliked'] ?? false,
   );
 }
-
-Post placeHolderPost = Post(
-  id: 0,
-  title: "Loading...",
-  content: "Loading...",
-  color: "#FFFFFF",
-  likeCount: 0,
-  dislikeCount: 0,
-  user: User(
-    id: 0,
-    name: "Loading...",
-    email: "Loading...",
-    profilePicture: "Loading...",
-  ),
-  createdAt: DateTime.now(),
-  isLiked: false,
-  isDisliked: false,
-);
