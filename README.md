@@ -1,5 +1,3 @@
-> **Note:** The hosted API is available until **December 11, 2025**. After that, it may be taken down or replaced.
-
 # Forum App Mobile
 
 This is a mobile forum app developed as the final project for the **SE-017 - Mobile Applications** course at Estonian Entrepreneurship University of Applied Sciences during the **Spring 2025 semester**.
@@ -20,14 +18,14 @@ Built with **Flutter** and **Dart**, the app features user authentication, profi
 **Backend:**
 - Laravel 11 (REST API)
 - Sanctum for authentication
-- Hosted on: [https://beytullahpaytar.com.tr/](https://beytullahpaytar.com.tr/)
 
 ---
 
 ## 🔗 Links
 
 - 📦 Laravel Backend Source: [ForumAppAPI-Laravel](https://github.com/Beytullahp42/ForumAppAPI-Laravel)
-- 🌐 Flutter Web App: [https://forum-app-flutter-web.vercel.app](https://forum-app-flutter-web.vercel.app)
+- 🌐 Flutter Web App: https://forumappflutter.beytullahp.com/
+- 📁 Laravel Backend hosted on: https://forumappapi.beytullahp.com/
 
 ---
 
