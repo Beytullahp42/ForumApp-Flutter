@@ -247,13 +247,8 @@ class ApiCalls {
     }
   }
 
-  static Future<bool> createComment(
-    int postId,
-    String content,
-  ) async {
-    final body = {
-      "p_content": content,
-    };
+  static Future<bool> createComment(int postId, String content) async {
+    final body = {"p_content": content};
     final response = await HttpService.post("posts/$postId/comments", body);
     if (response.statusCode == 200 || response.statusCode == 201) {
       return true;
@@ -288,7 +283,10 @@ class ApiCalls {
   }
 
   static Future<bool> dislikeComment(int commentId) async {
-    final response = await HttpService.post("comments/$commentId/dislike", null);
+    final response = await HttpService.post(
+      "comments/$commentId/dislike",
+      null,
+    );
     if (response.statusCode == 200 || response.statusCode == 201) {
       return true;
     } else {

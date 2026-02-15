@@ -13,7 +13,8 @@ class ChangePasswordModal extends StatefulWidget {
 class _ChangePasswordModalState extends State<ChangePasswordModal> {
   final TextEditingController _oldPasswordController = TextEditingController();
   final TextEditingController _newPasswordController = TextEditingController();
-  final TextEditingController _confirmPasswordController = TextEditingController();
+  final TextEditingController _confirmPasswordController =
+      TextEditingController();
 
   String? _errorMessage;
   bool _isSaving = false;
@@ -32,7 +33,9 @@ class _ChangePasswordModalState extends State<ChangePasswordModal> {
     final confirmPass = _confirmPasswordController.text.trim();
 
     if (newPass.length < 8) {
-      setState(() => _errorMessage = "New password must be at least 8 characters.");
+      setState(
+        () => _errorMessage = "New password must be at least 8 characters.",
+      );
       return;
     }
 
@@ -46,9 +49,13 @@ class _ChangePasswordModalState extends State<ChangePasswordModal> {
       _errorMessage = null;
     });
 
-    final success = await ApiCalls.changePassword(oldPass, newPass, confirmPass);
+    final success = await ApiCalls.changePassword(
+      oldPass,
+      newPass,
+      confirmPass,
+    );
 
-    if (!context.mounted) return;
+    if (!mounted) return;
 
     setState(() => _isSaving = false);
 
@@ -107,16 +114,17 @@ class _ChangePasswordModalState extends State<ChangePasswordModal> {
               const SizedBox(height: 16),
               FilledButton(
                 onPressed: _isSaving ? null : _handleChangePassword,
-                child: _isSaving
-                    ? const SizedBox(
-                  height: 18,
-                  width: 18,
-                  child: CircularProgressIndicator(
-                    strokeWidth: 2,
-                    color: Colors.white,
-                  ),
-                )
-                    : const Text("Save"),
+                child:
+                    _isSaving
+                        ? const SizedBox(
+                          height: 18,
+                          width: 18,
+                          child: CircularProgressIndicator(
+                            strokeWidth: 2,
+                            color: Colors.white,
+                          ),
+                        )
+                        : const Text("Save"),
               ),
             ],
           ),

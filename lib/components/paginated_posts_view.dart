@@ -35,7 +35,7 @@ class _PaginatedPostsWidgetState extends State<PaginatedPostsWidget> {
                   : ListView.builder(
                     itemCount: _posts.data.length,
                     itemBuilder: (context, index) {
-                      return postTile(post: _posts.data[index]);
+                      return PostTile(post: _posts.data[index]);
                     },
                   ),
         ),

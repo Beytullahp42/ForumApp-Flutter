@@ -1,8 +1,11 @@
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:forum_app_ui/routes.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:forum_app_ui/components/responsive_wrapper.dart';
 
-void main() {
+Future<void> main() async {
+  await dotenv.load(fileName: ".env");
   runApp(const MyApp());
 }
 
@@ -21,6 +24,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(brightness: Brightness.light),
       darkTheme: ThemeData(brightness: Brightness.dark),
       themeMode: ThemeMode.light,
+      builder: (context, child) => ResponsiveWrapper(child: child!),
     );
   }
 }
@@ -30,6 +34,8 @@ Future<void> checkConnection(BuildContext context) async {
   final noConnection =
       connectivityResult[0] ==
       ConnectivityResult.none; //no connection bağlantı yok
+
+  if (!context.mounted) return;
 
   if (noConnection) {
     Navigator.pushNamedAndRemoveUntil(

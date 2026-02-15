@@ -112,9 +112,12 @@ class _PostPageState extends State<PostPage> with RouteAware {
                                             await ApiCalls.deletePost(
                                               widget.postId,
                                             );
+                                            if (!context.mounted) return;
                                             Navigator.of(context).pop();
                                             Navigator.of(context).pop();
-                                            Fluttertoast.showToast(msg: "Post deleted successfully");
+                                            Fluttertoast.showToast(
+                                              msg: "Post deleted successfully",
+                                            );
                                           },
                                           child: const Text('Delete'),
                                         ),
@@ -132,7 +135,7 @@ class _PostPageState extends State<PostPage> with RouteAware {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      postTile(post: post, isClickable: false),
+                      PostTile(post: post, isClickable: false),
                       const Text('Comments', style: TextStyle(fontSize: 16)),
                       Expanded(
                         child: FutureBuilder<PaginatedResponse<Comment>>(

@@ -41,7 +41,7 @@ class _PaginatedCommentsWidgetState extends State<PaginatedCommentsWidget> {
                   : ListView.builder(
                     itemCount: _comments.data.length,
                     itemBuilder: (context, index) {
-                      return commentTile(comment: _comments.data[index]);
+                      return CommentTile(comment: _comments.data[index]);
                     },
                   ),
         ),

@@ -1,9 +1,11 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class HttpService {
-  static const String baseUrl = "https://beytullahpaytar.com.tr/api";
+  static String baseUrl =
+      dotenv.env['BASE_URL'] ?? "https://forumappapi.beytullahp.com/api";
 
   static Future<Map<String, String>> _getHeaders() async {
     final prefs = await SharedPreferences.getInstance();
@@ -18,16 +20,13 @@ class HttpService {
 
   static Future<http.Response> get(String endpoint) async {
     final headers = await _getHeaders();
-    return http.get(
-      Uri.parse("$baseUrl/$endpoint"),
-      headers: headers,
-    );
+    return http.get(Uri.parse("$baseUrl/$endpoint"), headers: headers);
   }
 
   static Future<http.Response> post(
-      String endpoint,
-      Map<String, dynamic>? body,
-      ) async {
+    String endpoint,
+    Map<String, dynamic>? body,
+  ) async {
     final headers = await _getHeaders();
     return http.post(
       Uri.parse("$baseUrl/$endpoint"),
@@ -37,9 +36,9 @@ class HttpService {
   }
 
   static Future<http.Response> put(
-      String endpoint,
-      Map<String, dynamic> body,
-      ) async {
+    String endpoint,
+    Map<String, dynamic> body,
+  ) async {
     final headers = await _getHeaders();
     return http.put(
       Uri.parse("$baseUrl/$endpoint"),
@@ -48,7 +47,10 @@ class HttpService {
     );
   }
 
-  static Future<http.Response> delete(String endpoint, {Map<String, dynamic>? body}) async {
+  static Future<http.Response> delete(
+    String endpoint, {
+    Map<String, dynamic>? body,
+  }) async {
     final headers = await _getHeaders();
     return http.delete(
       Uri.parse("$baseUrl/$endpoint"),

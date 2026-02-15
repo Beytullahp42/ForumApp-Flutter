@@ -29,7 +29,7 @@ class _DeleteAccountModalState extends State<DeleteAccountModal> {
 
     final response = await ApiCalls.deleteAccount(_passwordController.text);
 
-    if (!context.mounted) return;
+    if (!mounted) return;
 
     if (response) {
       Navigator.pushNamedAndRemoveUntil(

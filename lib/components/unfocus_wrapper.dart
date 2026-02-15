@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class UnfocusOnTap extends StatelessWidget {
   final Widget child;
 
-  const UnfocusOnTap({required this.child});
+  const UnfocusOnTap({super.key, required this.child});
 
   @override
   Widget build(BuildContext context) {
