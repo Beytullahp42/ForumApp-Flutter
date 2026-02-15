@@ -16,12 +16,11 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> with RouteAware {
   late Future<bool> isLoggedIn;
-  late Future<PaginatedResponse<Post>> postsFuture;
+  Future<PaginatedResponse<Post>>? postsFuture;
 
   @override
   void initState() {
     super.initState();
-    postsFuture = ApiCalls.getPosts();
     isLoggedIn = ApiCalls.isLoggedIn();
     _checkLogin();
   }
@@ -41,7 +40,9 @@ class _HomePageState extends State<HomePage> with RouteAware {
   @override
   void didPopNext() {
     checkConnection(context);
-    postsFuture = ApiCalls.getPosts();
+    setState(() {
+      postsFuture = ApiCalls.getPosts();
+    });
   }
 
   @override
@@ -53,6 +54,10 @@ class _HomePageState extends State<HomePage> with RouteAware {
     final loggedIn = await isLoggedIn;
     if (!loggedIn && mounted) {
       Navigator.pushReplacementNamed(context, AppRoutes.login);
+    } else if (loggedIn && mounted) {
+      setState(() {
+        postsFuture = ApiCalls.getPosts();
+      });
     }
   }
 
@@ -86,27 +91,35 @@ class _HomePageState extends State<HomePage> with RouteAware {
             ),
             body: Padding(
               padding: const EdgeInsets.fromLTRB(8, 8, 8, 32),
-              child: FutureBuilder<PaginatedResponse<Post>>(
-                future: postsFuture,
-                builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return const Center(child: CircularProgressIndicator());
-                  } else if (snapshot.hasData) {
-                    return RefreshIndicator(
-                      onRefresh: () async {
-                        setState(() {
-                          postsFuture = ApiCalls.getPosts();
-                        });
-                      },
-                      child: PaginatedPostsWidget(
-                        initialResponse: snapshot.data!,
+              child:
+                  postsFuture == null
+                      ? const Center(child: CircularProgressIndicator())
+                      : FutureBuilder<PaginatedResponse<Post>>(
+                        future: postsFuture,
+                        builder: (context, snapshot) {
+                          if (snapshot.connectionState ==
+                              ConnectionState.waiting) {
+                            return const Center(
+                              child: CircularProgressIndicator(),
+                            );
+                          } else if (snapshot.hasData) {
+                            return RefreshIndicator(
+                              onRefresh: () async {
+                                setState(() {
+                                  postsFuture = ApiCalls.getPosts();
+                                });
+                              },
+                              child: PaginatedPostsWidget(
+                                initialResponse: snapshot.data!,
+                              ),
+                            );
+                          } else {
+                            return const Center(
+                              child: Text('Failed to load posts.'),
+                            );
+                          }
+                        },
                       ),
-                    );
-                  } else {
-                    return const Center(child: Text('Failed to load posts.'));
-                  }
-                },
-              ),
             ),
           );
         } else {

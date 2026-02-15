@@ -7,16 +7,16 @@ import '../routes.dart';
 import '../services/api_calls.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class commentTile extends StatefulWidget {
+class CommentTile extends StatefulWidget {
   final Comment comment;
 
-  const commentTile({super.key, required this.comment});
+  const CommentTile({super.key, required this.comment});
 
   @override
-  State<commentTile> createState() => _commentTileState();
+  State<CommentTile> createState() => _CommentTileState();
 }
 
-class _commentTileState extends State<commentTile> {
+class _CommentTileState extends State<CommentTile> {
   late Comment comment;
   late bool _isLiked;
   late bool _isDisliked;

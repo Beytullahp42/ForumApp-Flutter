@@ -5,17 +5,17 @@ import '../models/post.dart';
 import '../services/api_calls.dart';
 import 'color_option.dart';
 
-class postTile extends StatefulWidget {
+class PostTile extends StatefulWidget {
   final Post post;
-  final isClickable;
+  final bool isClickable;
 
-  const postTile({super.key, required this.post, this.isClickable = true});
+  const PostTile({super.key, required this.post, this.isClickable = true});
 
   @override
-  State<postTile> createState() => _postTileState();
+  State<PostTile> createState() => _PostTileState();
 }
 
-class _postTileState extends State<postTile> {
+class _PostTileState extends State<PostTile> {
   late Post post;
   late bool _isLiked;
   late bool _isDisliked;
@@ -85,12 +85,15 @@ class _postTileState extends State<postTile> {
               children: [
                 Expanded(
                   child: GestureDetector(
-                    onTap: () { widget.isClickable ?
-                      Navigator.pushNamed(
-                        context,
-                        AppRoutes.post,
-                        arguments: post.id, // Pass the post ID to the PostPage
-                      ) : {};
+                    onTap: () {
+                      widget.isClickable
+                          ? Navigator.pushNamed(
+                            context,
+                            AppRoutes.post,
+                            arguments:
+                                post.id, // Pass the post ID to the PostPage
+                          )
+                          : {};
                     },
                     child: Container(
                       color: Colors.transparent,
@@ -108,7 +111,7 @@ class _postTileState extends State<postTile> {
                                 AppRoutes.userPage,
                                 arguments: post.user.id,
                               );
-                            }
+                            },
                           ),
                           Text(
                             post.title,

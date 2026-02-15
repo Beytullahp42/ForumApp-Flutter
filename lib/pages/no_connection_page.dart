@@ -10,19 +10,15 @@ class NoConnectionPage extends StatefulWidget {
 }
 
 class _NoConnectionPageState extends State<NoConnectionPage> {
-
-
   Future<void> _checkConnection() async {
     final connectivityResult = await (Connectivity().checkConnectivity());
     final noConnection = connectivityResult[0] == ConnectivityResult.none;
 
-    if (!noConnection) { // bağlantı varsa
-      Navigator.pushNamedAndRemoveUntil(
-        context,
-        '/home',
-        (route) => false,
-      );
-    } else { // bağlantı yoksa
+    if (mounted && !noConnection) {
+      // bağlantı varsa
+      Navigator.pushNamedAndRemoveUntil(context, '/home', (route) => false);
+    } else {
+      // bağlantı yoksa
       Fluttertoast.showToast(msg: "Still no connection");
     }
   }
