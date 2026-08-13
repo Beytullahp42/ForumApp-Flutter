@@ -7,8 +7,9 @@ RUN flutter pub get
 
 COPY . .
 
-ARG BASE_URL=http://localhost:8000/api
-RUN printf 'BASE_URL=%s\n' "$BASE_URL" > .env \
+ARG BASE_URL
+RUN : "${BASE_URL:?BASE_URL build argument is required}" \
+    && printf 'BASE_URL=%s\n' "$BASE_URL" > .env \
     && flutter build web --release
 
 FROM nginx:1.27-alpine AS production
